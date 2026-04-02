@@ -33,29 +33,51 @@ export function startScan() {
 async function runScan() {
   let browser;
   try {
-    const { getAuthenticatedContext } = await import('../scraper/facebook/auth.js');
-    const { scrapeGroups } = await import('../scraper/facebook/groupScraper.js');
+    let totalAdded = 0, totalSkipped = 0, totalErrors = 0;
 
-    const groups = config.facebook.groups;
-    if (groups.length === 0) {
-      state.status = 'error';
-      state.error = 'No Facebook groups configured';
-      state.finishedAt = new Date().toISOString();
-      return;
+    // 1. Yad2 scrape (always available, no auth needed)
+    try {
+      console.log('[Scan] Starting Yad2 scrape...');
+      const { scrapeYad2 } = await import('../scraper/yad2/scraper.js');
+      const yad2Listings = await scrapeYad2();
+      if (yad2Listings.length > 0) {
+        const yad2Result = await runPipeline(yad2Listings);
+        totalAdded += yad2Result.added;
+        totalSkipped += yad2Result.skipped;
+        totalErrors += yad2Result.errors;
+        console.log(`[Scan] Yad2: ${yad2Result.added} added, ${yad2Result.skipped} skipped`);
+      } else {
+        console.log('[Scan] Yad2: no listings returned');
+      }
+    } catch (err) {
+      console.error('[Scan] Yad2 error:', err.message);
+      totalErrors++;
     }
 
-    console.log(`[Scan] Starting scan of ${groups.length} groups...`);
-    const { browser: b, context } = await getAuthenticatedContext();
-    browser = b;
+    // 2. Facebook scrape (only if groups configured)
+    const groups = config.facebook.groups;
+    if (groups.length > 0) {
+      try {
+        console.log(`[Scan] Starting Facebook scan of ${groups.length} groups...`);
+        const { getAuthenticatedContext } = await import('../scraper/facebook/auth.js');
+        const { scrapeGroups } = await import('../scraper/facebook/groupScraper.js');
 
-    const { listings, aliveHashes } = await scrapeGroups(context, groups);
+        const { browser: b, context } = await getAuthenticatedContext();
+        browser = b;
 
-    // 1. Process new listings through pipeline
-    const pipelineResult = await runPipeline(listings);
+        const { listings, aliveHashes } = await scrapeGroups(context, groups);
+        const fbResult = await runPipeline(listings);
+        totalAdded += fbResult.added;
+        totalSkipped += fbResult.skipped;
+        totalErrors += fbResult.errors;
 
-    // 2. Touch all still-visible posts (update last_seen_at)
-    const touched = touchListingsByHash(aliveHashes);
-    console.log(`[Scan] Touched ${touched} existing listings as still alive (${aliveHashes.length} hashes)`);
+        const touched = touchListingsByHash(aliveHashes);
+        console.log(`[Scan] Facebook: ${fbResult.added} added, touched ${touched} existing`);
+      } catch (err) {
+        console.error('[Scan] Facebook error:', err.message);
+        totalErrors++;
+      }
+    }
 
     // 3. Deactivate listings not seen in the last 48 hours
     const deactivated = deactivateStaleListings(48);
@@ -63,13 +85,13 @@ async function runScan() {
       console.log(`[Scan] Deactivated ${deactivated} stale listings`);
     }
 
-    state.stats = { ...pipelineResult, deactivated };
+    state.stats = { added: totalAdded, skipped: totalSkipped, errors: totalErrors, deactivated };
     state.status = 'done';
     state.finishedAt = new Date().toISOString();
-    console.log(`[Scan] Done: ${pipelineResult.added} added, ${pipelineResult.skipped} skipped, ${deactivated} deactivated`);
+    console.log(`[Scan] Done: ${totalAdded} added, ${totalSkipped} skipped, ${deactivated} deactivated`);
 
     // Send Telegram notifications for new listings
-    if (config.telegram.botToken && pipelineResult.added > 0) {
+    if (config.telegram.botToken && totalAdded > 0) {
       try {
         const { notifyNewListings } = await import('../notifications/telegram.js');
         const notified = await notifyNewListings();

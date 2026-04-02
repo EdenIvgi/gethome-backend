@@ -14,9 +14,10 @@ import { listenerManager } from './listeners/manager.js';
 
 const app = express();
 
-// CORS
+// CORS - allow Vercel frontend and local dev
 app.use(cors({
-  origin: config.clientUrl,
+  origin: true,
+  credentials: true,
 }));
 
 app.use(express.json());

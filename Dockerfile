@@ -24,4 +24,4 @@ RUN mkdir -p data
 EXPOSE 3001
 
 ENV NODE_ENV=production
-CMD ["node", "index.js"]
+CMD ["sh", "-c", "node db/setup.js && node index.js"]

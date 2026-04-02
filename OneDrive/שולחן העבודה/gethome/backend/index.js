@@ -4,7 +4,15 @@ import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import listingsRouter from './routes/listings.js';
+import scanRouter from './routes/scan.js';
+import authRouter from './routes/auth.js';
+import preferencesRouter from './routes/preferences.js';
+import sseRouter from './routes/sse.js';
+import listenersRouter from './routes/listeners.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { authRequired } from './middleware/auth.js';
+import { listenerManager } from './listeners/manager.js';
+import './db/setup.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -17,7 +25,12 @@ app.use(cors({
 app.use(express.json());
 
 // API routes
+app.use('/api/auth', authRouter);
+app.use('/api/preferences', authRequired, preferencesRouter);
 app.use('/api/listings', listingsRouter);
+app.use('/api/scan', scanRouter);
+app.use('/api/sse', sseRouter);
+app.use('/api/listeners', authRequired, listenersRouter);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -35,10 +48,15 @@ if (config.nodeEnv === 'production') {
 
 app.use(errorHandler);
 
-// Start scheduler if enabled
+// Always load scheduler for cleanup cron jobs
+import('./tasks/scheduler.js').then(() => {
+  console.log('Scheduler initialized (cleanup cron active)');
+});
+
+// Start listeners if scraper is enabled
 if (config.enableScraper) {
-  import('./tasks/scheduler.js').then(() => {
-    console.log('Scraper scheduler started');
+  listenerManager.startAll().catch((err) => {
+    console.error('Failed to start listeners:', err.message);
   });
 }
 

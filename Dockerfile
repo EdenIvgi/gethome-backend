@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci --omit=dev
-RUN npx playwright install chromium
 
 COPY . .
 RUN mkdir -p data

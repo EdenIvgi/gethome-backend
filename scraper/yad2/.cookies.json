@@ -1,0 +1,1190 @@
+[
+  {
+    "name": "taboola_session_id",
+    "value": "v2_9ccfa522d9825c56b1631429fe732cbb_5ebd1c39-e920-4068-adb4-33d205fe485b-tuct10c009dc_1775046770_1775046770_CNawjgYQkqQ-GKb1oMjUMyABKAMwZjiI6wpAsJAQSLzS2ANQ____________AVgAYABonMfU2fCk8apxcAGAAQCIAQA",
+    "domain": ".taboola.com",
+    "path": "/yoyo-cellcomcentrix-sc/",
+    "expires": -1,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "taboola_session_id",
+    "value": "v2_5aaf87682a720c2c5c07016ec386673d_5ebd1c39-e920-4068-adb4-33d205fe485b-tuct10c009dc_1775046770_1775046770_CNawjgYQ_7xhGKb1oMjUMyABKAMwZjiI6wpAsJAQSLzS2ANQ____________AVgAYABonMfU2fCk8apxcAGAAQCIAQA",
+    "domain": ".taboola.com",
+    "path": "/sepros-yad2new-sc/",
+    "expires": -1,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "taboola_session_id",
+    "value": "v2_97eb29eddba27ec02a26520801cdb315_5ebd1c39-e920-4068-adb4-33d205fe485b-tuct10c009dc_1775046770_1775046770_CNawjgYQubJCGKb1oMjUMyABKAMwZjiI6wpAsJAQSLzS2ANQ____________AVgAYABonMfU2fCk8apxcAGAAQCIAQA",
+    "domain": ".taboola.com",
+    "path": "/yad2-sc/",
+    "expires": -1,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "__uzma",
+    "value": "c0ddfc4d-b6b0-4059-a96f-b664998e835a",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790342486.499335,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmb",
+    "value": "1774617686",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790342486.499459,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzme",
+    "value": "3807",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790342486.49948,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__ssds",
+    "value": "0",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1790598763,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "y2018-2-cohort",
+    "value": "46",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1790515289.085823,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "realestate-direct-user-redirect",
+    "value": "{\"regionId\":3}",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1806582763.80055,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__ssuzjsr0",
+    "value": "a9be0cd8e",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790598763,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmaj0",
+    "value": "c0ddfc4d-b6b0-4059-a96f-b664998e835a",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790598763,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmbj0",
+    "value": "1774617688",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790598763,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_gcl_au",
+    "value": "1.1.1561435098.1774617691",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1782393690,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_ttp",
+    "value": "3BWvYuzJPlfQRNQLhkoSkxgKjcc",
+    "domain": ".tiktok.com",
+    "path": "/",
+    "expires": 1808742768.342286,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "__uzma",
+    "value": "8aebdace-3fa9-46d3-8e25-dcffb0f959f5",
+    "domain": "gw.yad2.co.il",
+    "path": "/",
+    "expires": 1790342491.262294,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmb",
+    "value": "1774617691",
+    "domain": "gw.yad2.co.il",
+    "path": "/",
+    "expires": 1790342491.262426,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzme",
+    "value": "3839",
+    "domain": "gw.yad2.co.il",
+    "path": "/",
+    "expires": 1790342491.262477,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "guest_token",
+    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7InV1aWQiOiIxYmZjYzE3Yi1lYjI0LTRmMTQtYmY0MS02YmZiODc4MzBjMmIifSwiaWF0IjoxNzc0NjE3NjkxLCJleHAiOjE4MDYxNzUyOTF9.ykBidze4u9dEjNxLmv_h3RDHxLHk1ugQ7Se7G05JUCE",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1806153691.262894,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "Strict"
+  },
+  {
+    "name": "_ga",
+    "value": "GA1.1.1903241031.1774617692",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1809177692.407003,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "t_gid",
+    "value": "5ebd1c39-e920-4068-adb4-33d205fe485b-tuct10c009dc",
+    "domain": ".taboola.com",
+    "path": "/",
+    "expires": 1806583051.881035,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "t_pt_gid",
+    "value": "5ebd1c39-e920-4068-adb4-33d205fe485b-tuct10c009dc",
+    "domain": ".taboola.com",
+    "path": "/",
+    "expires": 1806583051.88113,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None",
+    "partitionKey": "https://yad2.co.il",
+    "_crHasCrossSiteAncestor": true
+  },
+  {
+    "name": "ts",
+    "value": "1774617692",
+    "domain": ".creativecdn.com",
+    "path": "/",
+    "expires": 1806153693.120326,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None",
+    "partitionKey": "https://yad2.co.il",
+    "_crHasCrossSiteAncestor": true
+  },
+  {
+    "name": "g",
+    "value": "Pvqidfa2ZmPEiH1oa0Fo_1774617692802",
+    "domain": ".creativecdn.com",
+    "path": "/",
+    "expires": 1806153693.120122,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "c",
+    "value": "Pvqidfa2ZmPEiH1oa0Fo_yA1Fw1ovS0d0G4E4NmBR_1774617692802",
+    "domain": ".creativecdn.com",
+    "path": "/",
+    "expires": 1806153693.120246,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None",
+    "partitionKey": "https://yad2.co.il",
+    "_crHasCrossSiteAncestor": true
+  },
+  {
+    "name": "_fbp",
+    "value": "fb.2.1774617693191.651579208702990631",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1782822769,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_tt_enable_cookie",
+    "value": "1",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1808742769,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_ttp",
+    "value": "01KMQQA3E2SHKNVZ6MNPD4V32X_.tt.2",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1808742769,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "XANDR_PANID",
+    "value": "V2KMPnaoNEVNKOVA3HJ9gtBh9aptLr2XMa_zmw63noEPfBJZcRpuqhRXFGNlm8hU26wVsKJg1dnoxlqpClPzhaj_KFugDh-_8rQZTIrUp3A.",
+    "domain": ".adnxs.com",
+    "path": "/",
+    "expires": 1782393694.264847,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None",
+    "partitionKey": "https://yad2.co.il",
+    "_crHasCrossSiteAncestor": true
+  },
+  {
+    "name": "uuid2",
+    "value": "2235048162415178120",
+    "domain": ".adnxs.com",
+    "path": "/",
+    "expires": 1782393694.265179,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "tt_viewer",
+    "value": "05154d32-12de-4489-a8ea-9c18a7423af3",
+    "domain": ".teads.tv",
+    "path": "/",
+    "expires": 1806067294.249629,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "audit_p",
+    "value": "1|IZi2Dx/F/10OophswGepT640ETx8hoa8u25bVNorz30FoL4QVXOnNefc0eFyF5PlLhIljako3QFw0S94mtzOH8nW3ti5+Z+94+ucy4SYxjqY12WTUmxEuKc7t9GMn6wx2LJxYOTMgWzfg1r268T6EqibsE9lHIhVxHABiknC4DVMqJO5mR56FezYXDqzN7B/H7wUdSegBMima+WVcS1g3g==",
+    "domain": ".rubiconproject.com",
+    "path": "/",
+    "expires": 1806153694.253122,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None",
+    "partitionKey": "https://yad2.co.il",
+    "_crHasCrossSiteAncestor": true
+  },
+  {
+    "name": "khaos",
+    "value": "MN8XK0BP-1P-ISQ1",
+    "domain": ".rubiconproject.com",
+    "path": "/",
+    "expires": 1806153694.253275,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "khaos_p",
+    "value": "MN8XK0BP-1P-ISQ1",
+    "domain": ".rubiconproject.com",
+    "path": "/",
+    "expires": 1806153694.253312,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None",
+    "partitionKey": "https://yad2.co.il",
+    "_crHasCrossSiteAncestor": true
+  },
+  {
+    "name": "audit",
+    "value": "1|IZi2Dx/F/10OophswGepT640ETx8hoa8u25bVNorz30FoL4QVXOnNefc0eFyF5PlLhIljako3QFw0S94mtzOH8nW3ti5+Z+94+ucy4SYxjqY12WTUmxEuKc7t9GMn6wx2LJxYOTMgWzfg1r268T6EqibsE9lHIhVxHABiknC4DVMqJO5mR56FezYXDqzN7B/H7wUdSegBMima+WVcS1g3g==",
+    "domain": ".rubiconproject.com",
+    "path": "/",
+    "expires": 1806153694.25335,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "receive-cookie-deprecation",
+    "value": "1",
+    "domain": ".rubiconproject.com",
+    "path": "/",
+    "expires": 1782393694.253372,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None",
+    "partitionKey": "https://yad2.co.il",
+    "_crHasCrossSiteAncestor": true
+  },
+  {
+    "name": "anj",
+    "value": "dTM7k!M4/rD>6NRF']wIg2GTynl+Y?!]tbPl@/@8+nOv3U_hN?<SkDE[LZ:2?:PsCJ)h$=Z3E^TAcj>FbR`i:bWl!s[OH:mAkzfD`dXW>Ar.Id*bpRz*qF1`*beQD+o>:'",
+    "domain": ".adnxs.com",
+    "path": "/",
+    "expires": 1782393694.265117,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "CMID",
+    "value": "acaEXosFVjkAA0zTAI2rUwAA",
+    "domain": ".casalemedia.com",
+    "path": "/",
+    "expires": 1806153694.681079,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "CMPS",
+    "value": "4977",
+    "domain": ".casalemedia.com",
+    "path": "/",
+    "expires": 1782393694.390194,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "CMPRO",
+    "value": "4977",
+    "domain": ".casalemedia.com",
+    "path": "/",
+    "expires": 1782393694.681265,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "udmts",
+    "value": "1774617694.0",
+    "domain": ".udmserve.net",
+    "path": "/",
+    "expires": 1806153694.841624,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "dt",
+    "value": "E8C87252-D34F-3063-B840-F7D356D3231E",
+    "domain": ".udmserve.net",
+    "path": "/",
+    "expires": 1806153694.841749,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "rtbh",
+    "value": "VnthQ8uKbf2W7fCnmJ9KaMvquI_FXY_DFu52CV6m3Rk",
+    "domain": ".udmserve.net",
+    "path": "/",
+    "expires": 1782393694.841807,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "PHPSESSID",
+    "value": "asrhfhin3ot6m73h2g6a715vc5",
+    "domain": "validate.perfdrive.com",
+    "path": "/",
+    "expires": -1,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzma",
+    "value": "c0ddfc4d-b6b0-4059-a96f-b664998e835a",
+    "domain": "validate.perfdrive.com",
+    "path": "/",
+    "expires": 1790599194.523268,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmb",
+    "value": "1774617686",
+    "domain": "validate.perfdrive.com",
+    "path": "/",
+    "expires": 1790599194.523427,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__ssds",
+    "value": "2",
+    "domain": ".perfdrive.com",
+    "path": "/",
+    "expires": 1790599194,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__ssuzjsr2",
+    "value": "a9be0cd8e",
+    "domain": ".perfdrive.com",
+    "path": "/",
+    "expires": 1790599194,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmaj2",
+    "value": "80ffc8b3-c9d1-4cbb-bea7-0514fb592a44",
+    "domain": ".perfdrive.com",
+    "path": "/",
+    "expires": 1790599194,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmbj2",
+    "value": "1774617703",
+    "domain": ".perfdrive.com",
+    "path": "/",
+    "expires": 1790599194,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_hjSessionUser_266550",
+    "value": "eyJpZCI6ImNmOGI4YWE3LTNjMTEtNTNmMi05Y2JjLTk0ZGI4YzM4YzY3MyIsImNyZWF0ZWQiOjE3NzQ2MTc2OTEyMzMsImV4aXN0aW5nIjp0cnVlfQ==",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1806582766,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "tluidp",
+    "value": "1903753095323933656427",
+    "domain": ".3lift.com",
+    "path": "/",
+    "expires": 1782396484.295858,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None",
+    "partitionKey": "https://yad2.co.il",
+    "_crHasCrossSiteAncestor": true
+  },
+  {
+    "name": "tluid",
+    "value": "1903753095323933656427",
+    "domain": ".3lift.com",
+    "path": "/",
+    "expires": 1782396484.296031,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "i",
+    "value": "aac2c79d-6db0-4dc2-beec-2480e9a05a38|1774691801",
+    "domain": ".openx.net",
+    "path": "/",
+    "expires": 1806227801.614501,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "pid",
+    "value": "3400445284051850273",
+    "domain": ".smartadserver.com",
+    "path": "/",
+    "expires": 1782467802.734895,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "TestIfCookieP",
+    "value": "ok",
+    "domain": ".smartadserver.com",
+    "path": "/",
+    "expires": 1808906202.735627,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "csync",
+    "value": "43:VnthQ8uKbf2W7fCnmJ9KaMvquI_FXY_DFu52CV6m3Rk",
+    "domain": ".smartadserver.com",
+    "path": "/",
+    "expires": 1777283802.735923,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "st_cs",
+    "value": "eFCSllq0P1V7EnOAXamJ6pXAQwQe7o4zDtx0QVzFBJ6SXP2oGokSEX0Qnq4pa1BNjo/tynUNM//WDu+20Css1A==",
+    "domain": ".seedtag.com",
+    "path": "/",
+    "expires": 1805795801.879239,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "st_csd",
+    "value": "1774691801380:1774691801380",
+    "domain": ".seedtag.com",
+    "path": "/",
+    "expires": 1805795801.879636,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "st_uid",
+    "value": "019d33df-d911-732a-8371-1242d0fe2df0",
+    "domain": ".seedtag.com",
+    "path": "/",
+    "expires": 1805795801.880045,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "_uid",
+    "value": "ume5cd2_7622324620949858913",
+    "domain": ".fwmrm.net",
+    "path": "/",
+    "expires": 1790243802.20013,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "33x_ps",
+    "value": "u%3D213293351173846%3As1%3D1774691801881%3Ats%3D1774691801881",
+    "domain": ".33across.com",
+    "path": "/",
+    "expires": 1806227803.314737,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "yieldmo_id",
+    "value": "wqAzBVV880VzoITJyNt5%7C1774656000000%7C0",
+    "domain": ".yieldmo.com",
+    "path": "/",
+    "expires": 1806227802.377222,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "tuuid",
+    "value": "791cfcd2-63df-4a98-8fb5-cb8274750327",
+    "domain": ".360yield.com",
+    "path": "/",
+    "expires": 1782467802.441777,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "tuuid_lu",
+    "value": "1774691801",
+    "domain": ".360yield.com",
+    "path": "/",
+    "expires": 1782467802.445189,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "__uis",
+    "value": "b1d54e3b-7482-4572-872e-2c906cafee7c",
+    "domain": ".go.sonobi.com",
+    "path": "/",
+    "expires": 1806227803.022577,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "HAPLB3G",
+    "value": "s3598|acel3",
+    "domain": ".go.sonobi.com",
+    "path": "/",
+    "expires": -1,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "__uir_rh",
+    "value": "438760982749563594",
+    "domain": ".go.sonobi.com",
+    "path": "/",
+    "expires": 1777499803.023455,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "__uin_rh",
+    "value": "VnthQ8uKbf2W7fCnmJ9KaMvquI_FXY_DFu52CV6m3Rk",
+    "domain": ".go.sonobi.com",
+    "path": "/",
+    "expires": 1806227803.023713,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "um",
+    "value": "!107,DNBYirfM7VRx1nsO-r4G9XQPjRccufifHz8Utdai.igqONn88xs0nA1--N-xHMgKQFR9CCA2eek0jH3EMrdn6gVfDFk,1782467802",
+    "domain": ".360yield.com",
+    "path": "/",
+    "expires": 1782467803.030055,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "umeh",
+    "value": "!107,0,1836899802,-1",
+    "domain": ".360yield.com",
+    "path": "/",
+    "expires": 1782467803.030707,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "n360-rtbhouse",
+    "value": "VnthQ8uKbf2W7fCnmJ9KaMvquI_FXY_DFu52CV6m3Rk",
+    "domain": ".nexx360.io",
+    "path": "/",
+    "expires": 1782551251.045224,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "KRTBCOOKIE_632",
+    "value": "23041-VnthQ8uKbf2W7fCnmJ9KaMvquI_FXY_DFu52CV6m3Rk&KRTB&23047-VnthQ8uKbf2W7fCnmJ9KaMvquI_FXY_DFu52CV6m3Rk&KRTB&23234-VnthQ8uKbf2W7fCnmJ9KaMvquI_FXY_DFu52CV6m3Rk&KRTB&23361-VnthQ8uKbf2W7fCnmJ9KaMvquI_FXY_DFu52CV6m3Rk",
+    "domain": ".pubmatic.com",
+    "path": "/",
+    "expires": 1777367251.477569,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "PugT",
+    "value": "1774775250",
+    "domain": ".pubmatic.com",
+    "path": "/",
+    "expires": 1777367251.477707,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "C",
+    "value": "1",
+    "domain": ".adform.net",
+    "path": "/",
+    "expires": 1777454454.287032,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "uid",
+    "value": "6572158260150311364",
+    "domain": ".adform.net",
+    "path": "/",
+    "expires": 1779960054.368312,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "TEST-COOKIE",
+    "value": "YES",
+    "domain": ".inmobi.com",
+    "path": "/",
+    "expires": 1806312054.669902,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "iid",
+    "value": "ID5-7-503b0dad-f402-427b-a1f2-fa7cd94b32c6",
+    "domain": ".inmobi.com",
+    "path": "/",
+    "expires": 1806312054.816002,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "msnartbhs",
+    "value": "VnthQ8uKbf2W7fCnmJ9KaMvquI_FXY_DFu52CV6m3Rk",
+    "domain": ".missena.io",
+    "path": "/",
+    "expires": 1777374740.409233,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "V",
+    "value": "X0K2nQa9zuc4",
+    "domain": ".contextweb.com",
+    "path": "/",
+    "expires": 1805886740.428161,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "VP",
+    "value": "part_X0K2nQa9zuc4",
+    "domain": ".contextweb.com",
+    "path": "/",
+    "expires": 1805886740.42844,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None",
+    "partitionKey": "https://yad2.co.il",
+    "_crHasCrossSiteAncestor": true
+  },
+  {
+    "name": "INGRESSCOOKIE",
+    "value": "3aa3751d09ad40c3",
+    "domain": "bh.contextweb.com",
+    "path": "/",
+    "expires": -1,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "am-uid",
+    "value": "48539fd9836d4d189823e6faaeaa810c",
+    "domain": ".admixer.net",
+    "path": "/",
+    "expires": 1782559245.97239,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "CID",
+    "value": "7c3b2135aff7fcad812831a76b685cab",
+    "domain": ".us.ck-ie.com",
+    "path": "/",
+    "expires": 1775388046.056602,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "__uzmcj0",
+    "value": "838664013917",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790598763,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmdj0",
+    "value": "1775046763",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790598763,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmlj0",
+    "value": "R7wbjDisiJjc8PYGvlrH2OiSb/1kaJ1XFav+nAPemMs=",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790598763,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmfj0",
+    "value": "7f9000c0ddfc4d-b6b0-4059-a96f-b664998e835a4-1774617688723429075148-003af62a0fab3d4f7f440",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790598763,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "recommendations-home-category",
+    "value": "{\"categoryId\":2,\"subCategoryId\":2,\"regionId\":3}",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1775048567.2342,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "canary",
+    "value": "never",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1775133164.627903,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "ab.storage.deviceId.716d3f2d-2039-4ea6-bd67-0782ecd0770b",
+    "value": "g%3Acf8304c2-79c1-8af2-d2df-e3ceaf270ca3%7Ce%3Aundefined%7Cc%3A1774617689482%7Cl%3A1775046766745",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1809606766,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_hjSession_266550",
+    "value": "eyJpZCI6IjAwODhiYWM5LWZkMjAtNGM3Ni04ZGQ5LWY5MDYzN2UyYjRlYiIsImMiOjE3NzUwNDY3NjY4MjQsInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjowLCJzcCI6MH0=",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1775048566,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "IDE",
+    "value": "AHWqTUnszdWXLV8cJQJEwLvx0MXfFJUkxrk_YfMLaMu6ztLyId2jUWG5-1DZtVLvpCc",
+    "domain": ".doubleclick.net",
+    "path": "/",
+    "expires": 1809606767.215787,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "ph_phc_RZgLIoU7R8us5QUz65UdOwbMurT8I6qRgINQhzdOKOL_posthog",
+    "value": "%7B%22distinct_id%22%3A%22019d2f75-0502-71ee-88a0-feb2efc0b716%22%2C%22%24sesid%22%3A%5Bnull%2Cnull%2Cnull%5D%7D",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1806582767,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmc",
+    "value": "2491710014137",
+    "domain": "gw.yad2.co.il",
+    "path": "/",
+    "expires": 1790771567.759284,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmd",
+    "value": "1775046768",
+    "domain": "gw.yad2.co.il",
+    "path": "/",
+    "expires": 1790771567.759382,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmf",
+    "value": "7f90008aebdace-3fa9-46d3-8e25-dcffb0f959f54-1774617691066429077221-003782c814fe1721b2f100",
+    "domain": "gw.yad2.co.il",
+    "path": "/",
+    "expires": 1790771567.759417,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "ab.storage.sessionId.716d3f2d-2039-4ea6-bd67-0782ecd0770b",
+    "value": "g%3A60ea9d78-a15c-d6ff-532d-425c8dd2bdb7%7Ce%3A1775048568140%7Cc%3A1775046766743%7Cl%3A1775046768140",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1809606768,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__rtbh.uid",
+    "value": "%7B%22eventType%22%3A%22uid%22%2C%22id%22%3A%22GA1.1.1903241031.1774617692%22%2C%22expiryDate%22%3A%222027-04-01T12%3A32%3A48.732Z%22%7D",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1806582768,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "__rtbh.lid",
+    "value": "%7B%22eventType%22%3A%22lid%22%2C%22id%22%3A%226wC7wnqnF8SzNkDPYUXM%22%2C%22expiryDate%22%3A%222027-04-01T12%3A32%3A48.734Z%22%7D",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1806582768,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "ljt_reader",
+    "value": "Mbaw3QZHbejWRW0WRRqvlAGg",
+    "domain": ".lijit.com",
+    "path": "/",
+    "expires": 1806582770.835453,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "ttcsid",
+    "value": "1775046769775::VQR2DzEV6gMU4oVU1k9K.6.1775046779795.0::1.-10298.0::0.0.0.0::0.0.0",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1808742779,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "ttcsid_D2IU053C77UFE4JPK0VG",
+    "value": "1775046769772::WXgX5yzpZz1FfSdorVf2.6.1775046779797.1",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1808742779,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__gads",
+    "value": "ID=279ee69ea16a8d39:T=1774617690:RT=1775047067:S=ALNI_MZwz69UtzMxEiLaum7zdvWsB5YmXg",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1808313690,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "__gpi",
+    "value": "UID=000013b0bcefbb27:T=1774617690:RT=1775047067:S=ALNI_MY-to9TPM1CLU3uwMjhjdXkk_KaAg",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1808313690,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "__eoi",
+    "value": "ID=3b0e7e29a69b1dd9:T=1774617690:RT=1775047067:S=AA-AfjZuD1acWm_bN5eUQSesNd3T",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1790169690,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "__uzmc",
+    "value": "7645318127779",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790771994.010528,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmd",
+    "value": "1775047194",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790771994.01069,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmf",
+    "value": "7f9000c0ddfc4d-b6b0-4059-a96f-b664998e835a4-1774617686330429508259-0038807a90daa7f7d4b181",
+    "domain": "www.yad2.co.il",
+    "path": "/",
+    "expires": 1790771994.010764,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "uzmx",
+    "value": "7f9000fced95a6-348b-4b1b-902d-96bf462080a54-1774617686330429508259-ca8e74f7b74f2c72274",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1790771994.010858,
+    "httpOnly": true,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmc",
+    "value": "9850118144725",
+    "domain": "validate.perfdrive.com",
+    "path": "/",
+    "expires": 1790599194.523496,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmd",
+    "value": "1775047195",
+    "domain": "validate.perfdrive.com",
+    "path": "/",
+    "expires": 1790599194.523563,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_ga_GQ385NHRG1",
+    "value": "GS2.1.s1775046767$o7$g1$t1775047194$j60$l0$h0",
+    "domain": ".yad2.co.il",
+    "path": "/",
+    "expires": 1809607194.693519,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmcj2",
+    "value": "754867661014",
+    "domain": ".perfdrive.com",
+    "path": "/",
+    "expires": 1790599194,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__uzmdj2",
+    "value": "1775047195",
+    "domain": ".perfdrive.com",
+    "path": "/",
+    "expires": 1790599194,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "cbfm022f7",
+    "value": "0-0-0-0-0",
+    "domain": "validate.perfdrive.com",
+    "path": "/",
+    "expires": 1775047320,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "cbft022f7",
+    "value": "0-0-0-0-0",
+    "domain": "validate.perfdrive.com",
+    "path": "/",
+    "expires": 1775047320,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "cbfcl022f7",
+    "value": "wrapper,logo-wrapper,logo,logo-mobile,container,content,title,sub-title,robot-captcha,captcha-wrapper,captcha-mid,h-captcha,btn,btn-success,btn-sm",
+    "domain": "validate.perfdrive.com",
+    "path": "/",
+    "expires": 1775047320,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  }
+]

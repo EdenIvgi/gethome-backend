@@ -7,3 +7,4 @@ fb_session.json
 *.db-shm
 *.db-wal
 .playwright/
+.cookies.json

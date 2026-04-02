@@ -51,6 +51,7 @@ async function runScan() {
       }
     } catch (err) {
       console.error('[Scan] Yad2 error:', err.message);
+      state.error = `Yad2: ${err.message}`;
       totalErrors++;
     }
 

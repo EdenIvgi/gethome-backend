@@ -17,6 +17,10 @@ on:
         description: 'Skip Yad2 scrape'
         type: boolean
         default: false
+      no-llm:
+        description: 'Disable Groq LLM (use heuristic-only classifier — faster, no rate-limits)'
+        type: boolean
+        default: false
 
 # Prevent two scrape runs from overlapping (DB writes + FB session corruption)
 concurrency:
@@ -53,9 +57,10 @@ jobs:
           FB_EMAIL:           ${{ secrets.FB_EMAIL }}
           FB_PASSWORD:        ${{ secrets.FB_PASSWORD }}
           FB_GROUPS:          ${{ secrets.FB_GROUPS }}
-          YAD2_MAX_PAGES:     '2'
+          YAD2_MAX_PAGES:     '20'
         run: |
           FLAGS=""
           if [ "${{ inputs.skip-facebook }}" = "true" ]; then FLAGS="$FLAGS --skip-facebook"; fi
           if [ "${{ inputs.skip-yad2 }}" = "true" ]; then FLAGS="$FLAGS --skip-yad2"; fi
+          if [ "${{ inputs.no-llm }}" = "true" ]; then FLAGS="$FLAGS --no-llm"; fi
           npm run scrape:once -- $FLAGS

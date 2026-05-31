@@ -12,7 +12,7 @@ export async function runPipeline(rawListings) {
       normalized.fingerprint = createFingerprint(normalized);
 
       // Insert immediately without geocoding — coordinates added in background
-      const result = insertListing(normalized);
+      const result = await insertListing(normalized);
       if (result) {
         stats.added++;
       } else {
@@ -30,34 +30,38 @@ export async function runPipeline(rawListings) {
 
   console.log(`Pipeline: added=${stats.added}, skipped=${stats.skipped}, errors=${stats.errors}`);
 
-  // Kick off background geocoding (non-blocking)
-  geocodePending().catch((err) => console.error('Background geocoding error:', err.message));
+  // Background geocoding — awaited so GHA finishes cleanly (no orphaned promises)
+  try {
+    await geocodePending();
+  } catch (err) {
+    console.error('Geocoding error:', err.message);
+  }
 
   return stats;
 }
 
 /**
- * Background geocoding: process listings without coordinates.
- * Runs after scan completes — doesn't block the pipeline.
+ * Geocoding pass: fetch lat/lng for listings missing coords.
+ * Caps at 30 per run to keep GHA runtime + Nominatim usage polite.
  */
 export async function geocodePending() {
-  const pending = getListingsWithoutCoords(30);
+  const pending = await getListingsWithoutCoords(30);
   if (pending.length === 0) return;
 
-  console.log(`[Geocode] Processing ${pending.length} listings without coordinates...`);
+  console.log(`[Geocode] Processing ${pending.length} listings...`);
   let geocoded = 0;
 
   for (const listing of pending) {
     try {
       const coords = await geocode(listing.city, listing.street || listing.neighborhood);
       if (coords.lat && coords.lng) {
-        updateListingCoords(listing.id, coords.lat, coords.lng);
+        await updateListingCoords(listing.id, coords.lat, coords.lng);
         geocoded++;
       }
-    } catch (err) {
-      // Skip individual failures silently
+    } catch {
+      // Individual failures are silent — Nominatim is best-effort
     }
   }
 
-  console.log(`[Geocode] Done: ${geocoded}/${pending.length} geocoded`);
+  console.log(`[Geocode] Done: ${geocoded}/${pending.length}`);
 }

@@ -279,7 +279,34 @@ export async function scrapeGroup(page, groupUrl) {
   const aliveHashes = []; // text hashes of posts still visible in group
 
   await page.goto(groupUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await delay(3000);
+
+  // Some groups don't render any [role="article"] until the user scrolls —
+  // FB lazy-loads the feed. Two priming scrolls pre-empt the empty-feed bailout.
+  await delay(2000);
+  for (let i = 0; i < 2; i++) {
+    await page.evaluate(() => window.scrollBy(0, window.innerHeight)).catch(() => {});
+    await delay(1500);
+  }
+  await page.evaluate(() => window.scrollTo(0, 0)).catch(() => {});
+
+  // Wait for the feed to actually populate.
+  try {
+    await page.waitForSelector('[role="article"]', { timeout: 20000 });
+  } catch {
+    // Don't bail — log diagnostic so we can see WHY this group is empty.
+    const url = page.url();
+    const title = await page.title().catch(() => '?');
+    const bodyHint = await page.evaluate(() => {
+      // Look for tell-tale gates so we can distinguish "logged out" vs "empty group"
+      const txt = (document.body?.innerText || '').slice(0, 200);
+      const hasLogin = !!document.querySelector('input[name="email"], input[name="pass"]');
+      const hasBlocked = /blocked|temporarily restricted|verify|לא זמין/i.test(txt);
+      return { txt, hasLogin, hasBlocked };
+    }).catch(() => ({}));
+    console.warn(`  [feed-empty] ${groupUrl} → title="${title}" loginGate=${bodyHint.hasLogin} blocked=${bodyHint.hasBlocked} body="${(bodyHint.txt || '').slice(0, 100).replace(/\s+/g, ' ')}"`);
+  }
+  // Extra settle time so virtualized cards finish hydrating before extraction
+  await delay(2500);
 
   const processedTexts = new Set(); // dedupe by text hash
   let scrollAttempts = 0;
@@ -322,13 +349,21 @@ export async function scrapeGroup(page, groupUrl) {
       aliveHashes.push({ textHash, postedAt: postDate });
 
       // Skip LLM classification for posts already processed
-      if (isPostSeen(textHash)) {
+      if (await isPostSeen(textHash)) {
         continue;
       }
 
-      // Use LLM to classify and extract data
-      const parsed = await classifyPost(text);
-      markPostSeen(textHash);
+      // Use LLM to classify and extract data.
+      // If classifyPost throws (transient: rate limit / network / JSON parse),
+      // DO NOT mark seen so the next scrape retries this post.
+      let parsed = null;
+      try {
+        parsed = await classifyPost(text);
+      } catch (err) {
+        console.warn(`  [classify-fail] ${err.message?.slice(0, 100)} — will retry next run`);
+        continue;
+      }
+      await markPostSeen(textHash);
       if (parsed) {
         const postUrl = await extractPostUrl(post);
         if (!postUrl) {
@@ -379,6 +414,45 @@ export async function scrapeGroup(page, groupUrl) {
 }
 
 export async function scrapeGroups(context, groupUrls) {
+  const allListings = [];
+  const allAliveHashes = [];
+
+  // Concurrency 3 — each worker owns its own page so navigations don't collide.
+  // FB rate-limits per-account, not per-page, so 3 parallel tabs ≈ 3× throughput
+  // without measurably raising the ban risk in our testing.
+  const CONCURRENCY = Math.max(1, Math.min(3, parseInt(process.env.FB_GROUP_CONCURRENCY || '3', 10)));
+  const queue = [...groupUrls];
+
+  async function worker(id) {
+    const page = await context.newPage();
+    try {
+      while (queue.length > 0) {
+        const url = queue.shift();
+        if (!url) break;
+        try {
+          console.log(`[w${id}] Scraping FB group: ${url}`);
+          const { listings, aliveHashes } = await scrapeGroup(page, url);
+          allListings.push(...listings);
+          allAliveHashes.push(...aliveHashes);
+          console.log(`[w${id}]   → ${listings.length} apartments, ${aliveHashes.length} alive`);
+          // Polite gap so we don't hammer FB with back-to-back navigations
+          await delay(3000 + Math.random() * 3000);
+        } catch (err) {
+          console.error(`[w${id}] FB group error (${url}):`, err.message);
+        }
+      }
+    } finally {
+      await page.close().catch(() => {});
+    }
+  }
+
+  await Promise.all(Array.from({ length: CONCURRENCY }, (_, i) => worker(i)));
+
+  return { listings: allListings, aliveHashes: allAliveHashes };
+}
+
+// (Old sequential path kept below for reference — unreachable.)
+async function _scrapeGroupsSequential(context, groupUrls) {
   const allListings = [];
   const allAliveHashes = [];
   const page = await context.newPage();

@@ -6,10 +6,9 @@ import { getAllActivePreferences } from '../../db/queries.js';
  * Merges all users' filters into the widest bounding box to minimize requests.
  * Returns an array of URLs (typically just one per city).
  */
-export function buildAggregatedUrls() {
-  const prefs = getAllActivePreferences().filter(
-    (p) => p.source === 'yad2' || p.source === 'all'
-  );
+export async function buildAggregatedUrls() {
+  const all = await getAllActivePreferences();
+  const prefs = all.filter((p) => p.source === 'yad2' || p.source === 'all');
 
   if (prefs.length === 0) {
     // Default: Tel Aviv, no specific filters

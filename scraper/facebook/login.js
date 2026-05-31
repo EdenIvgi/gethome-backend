@@ -9,7 +9,7 @@ async function manualLogin() {
   console.log('Please log in and wait for the feed to load.');
   console.log('');
 
-  const browser = await chromium.launch({ headless: false, channel: 'chrome' });
+  const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({ locale: 'he-IL' });
   const page = await context.newPage();
 

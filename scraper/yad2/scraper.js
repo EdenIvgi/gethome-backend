@@ -1,10 +1,14 @@
-import { chromium } from 'playwright';
+import { chromium } from 'playwright-extra';
+import stealth from 'puppeteer-extra-plugin-stealth';
 import { config } from '../../config.js';
 import { listingExistsWithData } from '../../db/queries.js';
 import { createFingerprint } from '../../pipeline/deduplicator.js';
+import { resolveArea } from '../shared.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+chromium.use(stealth());
 
 const DETAIL_POOL_SIZE = 3; // Number of parallel detail page workers
 
@@ -125,19 +129,7 @@ function extractNeighborhoodFromUrl(url) {
   return null;
 }
 
-/**
- * Resolve area from neighborhood name.
- */
-function resolveArea(neighborhood) {
-  if (!neighborhood) return null;
-  // Direct match
-  if (NEIGHBORHOOD_TO_AREA[neighborhood]) return NEIGHBORHOOD_TO_AREA[neighborhood];
-  // Partial match (e.g. "הצפון הישן - ככר המדינה" → "הצפון הישן")
-  for (const [key, area] of Object.entries(NEIGHBORHOOD_TO_AREA)) {
-    if (neighborhood.includes(key) || key.includes(neighborhood)) return area;
-  }
-  return null;
-}
+// resolveArea is imported at the top from ../shared.js
 
 async function saveCookies(context) {
   try {
@@ -176,13 +168,21 @@ async function extractDetailPage(page, url) {
 
     const detail = await page.evaluate(() => {
       // --- Images ---
+      // ACCEPT only real listing-photo CDN paths. The site-assets domain
+      // (assets.yad2.co.il/.../yad2Logo.png) was leaking the header logo into
+      // every detail page result.
+      const isListingPhoto = (s) =>
+        /img\.yad2\.co\.il\/Pic\//i.test(s) ||
+        /\.y2\.co\.il\/(?:Pic|listing)/i.test(s) ||
+        /ynet[^/]*\.co\.il\/.+\.(?:jpg|jpeg|png|webp)/i.test(s);
+
       const images = [];
       const seen = new Set();
 
       // Gallery images (main carousel/gallery)
       for (const img of document.querySelectorAll('img[src]')) {
         const src = img.src || '';
-        if (!src.includes('yad2') && !src.includes('y2') && !src.includes('ynet')) continue;
+        if (!isListingPhoto(src)) continue;
         const w = img.naturalWidth || parseInt(img.getAttribute('width') || '0', 10);
         if (w > 0 && w < 80) continue;
         const key = src.split('?')[0];
@@ -195,7 +195,7 @@ async function extractDetailPage(page, url) {
       for (const source of document.querySelectorAll('picture source[srcset]')) {
         const srcset = source.srcset || '';
         const firstUrl = srcset.split(',')[0]?.trim()?.split(' ')[0];
-        if (firstUrl && (firstUrl.includes('yad2') || firstUrl.includes('y2') || firstUrl.includes('ynet'))) {
+        if (firstUrl && isListingPhoto(firstUrl)) {
           const key = firstUrl.split('?')[0];
           if (!seen.has(key)) {
             seen.add(key);
@@ -490,15 +490,18 @@ async function extractListingsFromPage(page) {
           if (neighborhood.length < 2) neighborhood = null;
         }
 
-        // Extract images from the listing card
+        // Extract images from the listing card (same filter as detail-page extractor)
+        const isListingPhotoCard = (s) =>
+          /img\.yad2\.co\.il\/Pic\//i.test(s) ||
+          /\.y2\.co\.il\/(?:Pic|listing)/i.test(s) ||
+          /ynet[^/]*\.co\.il\/.+\.(?:jpg|jpeg|png|webp)/i.test(s);
         const images = [];
         for (const img of container.querySelectorAll('img[src]')) {
           const src = img.src || '';
-          if (src.includes('yad2') || src.includes('y2') || src.includes('ynet')) {
-            const w = img.naturalWidth || parseInt(img.getAttribute('width') || '0', 10);
-            if (w > 0 && w < 50) continue;
-            images.push(src);
-          }
+          if (!isListingPhotoCard(src)) continue;
+          const w = img.naturalWidth || parseInt(img.getAttribute('width') || '0', 10);
+          if (w > 0 && w < 50) continue;
+          images.push(src);
         }
 
         // Extract "עודכן" date from card text
@@ -508,7 +511,7 @@ async function extractListingsFromPage(page) {
         
         // Also try to extract relative times like "לפני 5 דקות"
         if (!updatedText) {
-          const relativeMatch = allText.match(/(לפניs+d+s+(?:דקה|דקות|שעה|שעות|יום|ימים|שבוע|שבועות|חודש|חודשים))/);
+          const relativeMatch = allText.match(/(לפני\s+\d+\s+(?:דקה|דקות|שעה|שעות|יום|ימים|שבוע|שבועות|חודש|חודשים))/);
           if (relativeMatch) updatedText = relativeMatch[1];
         }
         if (price && price >= 1000 && price <= 50000) {
@@ -533,7 +536,7 @@ async function extractListingsFromPage(page) {
 
   return listings.map((l) => {
     // Resolve area from neighborhood
-    const area = resolveArea(l.neighborhood);
+    const area = resolveArea(l.neighborhood, l.street);
     // Parse date from card text
     const postedAt = l.updatedText ? parseYad2Date(l.updatedText) : null;
     return {
@@ -556,7 +559,6 @@ export async function scrapeYad2(maxPages) {
 
   const browser = await chromium.launch({
     headless: false,
-    channel: 'chrome',
   });
 
   const context = await browser.newContext({
@@ -571,43 +573,63 @@ export async function scrapeYad2(maxPages) {
   const page = await context.newPage();
   const allListings = [];
 
-  const url = `https://www.yad2.co.il/realestate/rent?city=${config.yad2.cityId}`;
+  const baseUrl = `https://www.yad2.co.il/realestate/rent?city=${config.yad2.cityId}`;
   console.log('Yad2: Navigating to Tel Aviv...');
 
+  // Track seen item URLs so we can detect "stale page" — Yad2 sometimes returns
+  // the same listings when you go past the real last page, or shows an empty
+  // page that looks valid but has zero new content.
+  const seenUrls = new Set();
+
   try {
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await randomDelay(5000, 8000);
-
-    // Check for captcha/challenge
-    const hasCaptcha = await page.$('iframe[src*="hcaptcha"], iframe[src*="captcha"]');
-    if (hasCaptcha) {
-      console.warn('Yad2: Captcha detected. Waiting 30s...');
-      await delay(30000);
-    }
-
-    await page.waitForSelector('a[href*="/realestate/item/"]', { timeout: 15000 }).catch(() => null);
-
-    const listings = await extractListingsFromPage(page);
-    allListings.push(...listings);
-    console.log(`Yad2: Tel Aviv - ${listings.length} listings found`);
-
-    // Pagination
-    for (let p = 2; p <= maxPages; p++) {
+    // Pagination by URL (?page=N). Far more reliable than clicking the page
+    // number button (Yad2 lazy-renders the pagination bar and the selectors
+    // are brittle). We break out the moment a page yields 0 NEW listings.
+    for (let p = 1; p <= maxPages; p++) {
+      const url = p === 1 ? baseUrl : `${baseUrl}&page=${p}`;
       try {
-        await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-        await randomDelay(1500, 3000);
+        // Before each page-N nav (N>1), scroll the current page like a human
+        // would, then wait a generous random delay — direct ?page=N hops in
+        // <5s flag Yad2's anti-bot every time.
+        if (p > 1) {
+          for (let i = 0; i < 4; i++) {
+            await page.evaluate(() => window.scrollBy(0, 600 + Math.random() * 400)).catch(() => {});
+            await randomDelay(800, 1600);
+          }
+          await randomDelay(8000, 14000);
+        }
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await randomDelay(p === 1 ? 5000 : 6000, p === 1 ? 8000 : 9000);
 
-        const nextBtn = await page.$(`button:has-text("${p}"), [class*="pagination"] :has-text("${p}")`);
-        if (!nextBtn) break;
+        // Captcha check on each navigation — Yad2 escalates after a few pages.
+        const hasCaptcha = await page.$('iframe[src*="hcaptcha"], iframe[src*="captcha"]');
+        if (hasCaptcha) {
+          console.warn(`Yad2: Captcha on page ${p}, bailing pagination`);
+          break;
+        }
 
-        await nextBtn.click();
-        await randomDelay(5000, 10000);
-        await page.waitForSelector('a[href*="/realestate/item/"]', { timeout: 10000 }).catch(() => null);
+        await page.waitForSelector('a[href*="/realestate/item/"]', { timeout: 15000 }).catch(() => null);
 
-        const pageListings = await extractListingsFromPage(page);
-        allListings.push(...pageListings);
-        console.log(`Yad2: Tel Aviv page ${p} - ${pageListings.length} listings`);
-      } catch {
+        const listings = await extractListingsFromPage(page);
+
+        // Dedupe within this run — Yad2 sometimes mirrors page N → page 1.
+        const newListings = listings.filter(l => l.url && !seenUrls.has(l.url));
+        for (const l of newListings) seenUrls.add(l.url);
+
+        allListings.push(...newListings);
+        console.log(`Yad2: Tel Aviv page ${p} — ${listings.length} found, ${newListings.length} new (total: ${allListings.length})`);
+
+        // Bail-out signals — we've reached the end of the actual stock.
+        if (listings.length === 0) {
+          console.log(`Yad2: page ${p} empty, stopping pagination`);
+          break;
+        }
+        if (newListings.length === 0 && p > 1) {
+          console.log(`Yad2: page ${p} returned only duplicates, stopping`);
+          break;
+        }
+      } catch (err) {
+        console.warn(`Yad2: page ${p} navigation error: ${err.message}, stopping`);
         break;
       }
     }
@@ -627,7 +649,7 @@ export async function scrapeYad2(maxPages) {
 
         // Opt 2: Skip if listing already exists in DB with full data
         const fp = createFingerprint({ source: 'yad2', externalId: listing.externalId, price: listing.price, rooms: listing.rooms, city: listing.city });
-        const existing = listingExistsWithData(fp);
+        const existing = await listingExistsWithData(fp);
         if (existing && existing.hasImages && existing.hasDescription) {
           skippedExisting++;
           continue;
@@ -679,7 +701,7 @@ export async function scrapeYad2(maxPages) {
               if (detail.street && !listing.street) listing.street = detail.street;
               if (detail.postedAt) listing.postedAt = detail.postedAt;
               if (listing.neighborhood && !listing.area) {
-                listing.area = resolveArea(listing.neighborhood) || null;
+                listing.area = resolveArea(listing.neighborhood, listing.street) || null;
               }
             }
           }

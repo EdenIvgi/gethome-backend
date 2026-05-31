@@ -1,0 +1,61 @@
+name: Scrape listings
+
+# Runs the full Yad2 + Facebook scrape cycle on a schedule.
+# Designed for ~1 run per hour during active hours, less at night.
+on:
+  schedule:
+    # Every hour at minute 17 (avoids the top-of-hour load on GHA)
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    # Manual trigger from the Actions tab
+    inputs:
+      skip-facebook:
+        description: 'Skip Facebook scrape'
+        type: boolean
+        default: false
+      skip-yad2:
+        description: 'Skip Yad2 scrape'
+        type: boolean
+        default: false
+
+# Prevent two scrape runs from overlapping (DB writes + FB session corruption)
+concurrency:
+  group: scrape
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --omit=dev
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run scrape
+        env:
+          NODE_ENV: production
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN:   ${{ secrets.TURSO_AUTH_TOKEN }}
+          GROQ_API_KEY:       ${{ secrets.GROQ_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          FB_EMAIL:           ${{ secrets.FB_EMAIL }}
+          FB_PASSWORD:        ${{ secrets.FB_PASSWORD }}
+          FB_GROUPS:          ${{ secrets.FB_GROUPS }}
+          YAD2_MAX_PAGES:     '2'
+        run: |
+          FLAGS=""
+          if [ "${{ inputs.skip-facebook }}" = "true" ]; then FLAGS="$FLAGS --skip-facebook"; fi
+          if [ "${{ inputs.skip-yad2 }}" = "true" ]; then FLAGS="$FLAGS --skip-yad2"; fi
+          npm run scrape:once -- $FLAGS

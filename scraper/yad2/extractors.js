@@ -1,3 +1,41 @@
+import { config } from '../../config.js';
+
+// Flattened known TLV neighborhood names — Yad2 frequently stuffs the
+// neighborhood into the `city` field ("פלורנטין", "לב תל אביב"). Used to
+// detect that and move it back where it belongs.
+const KNOWN_NEIGHBORHOODS = [...new Set(Object.values(config.telAvivAreas).flat())];
+
+function isKnownNeighborhood(s) {
+  if (!s) return false;
+  const t = String(s).replace(/["'`׳״]/g, '').trim();
+  return KNOWN_NEIGHBORHOODS.some((n) => t === n || t.includes(n));
+}
+
+// Junk neighborhood: digits glued to "דירה", no Hebrew at all, etc.
+function isJunkNeighborhood(s) {
+  if (!s) return true;
+  const t = String(s).trim();
+  return (
+    t.length < 2 ||
+    !/[֐-ת]/.test(t) ||
+    /\d\s*דירה|דירה\s*\d|^\d/.test(t) ||
+    /[₪]|מ"ר/.test(t)
+  );
+}
+
+// Normalize a scraped Yad2 listing's city/neighborhood: recover a
+// neighborhood wrongly placed in `city`, and drop junk neighborhoods.
+function normalizeLocation(l) {
+  let { city, neighborhood } = l;
+  if (neighborhood && isJunkNeighborhood(neighborhood)) neighborhood = null;
+  if ((!neighborhood || isJunkNeighborhood(neighborhood)) && isKnownNeighborhood(city)) {
+    neighborhood = String(city).replace(/["'`׳״]/g, '').trim();
+    city = 'תל אביב';
+  }
+  if (!city || isJunkNeighborhood(city)) city = 'תל אביב';
+  return { ...l, city, neighborhood: neighborhood || null };
+}
+
 export function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -42,22 +80,43 @@ export async function extractListingsFromPage(page) {
         const areaMatch = allText.match(/(\d+)\s*מ"ר/);
         if (areaMatch) areaSqm = parseInt(areaMatch[1], 10);
         const subtitleEl = container.querySelector('[class*="subtitle"], [class*="address"], [class*="location"], [class*="item-data"]');
-        const locationText = subtitleEl?.textContent?.trim() || '';
+        // innerText (not textContent) keeps line/element breaks so nested
+        // price/room spans don't get glued onto the address ("500הירקון 14דירה").
+        const rawLoc = (subtitleEl?.innerText || subtitleEl?.textContent || '').trim();
         let city = 'תל אביב', neighborhood = null, street = null;
-        if (locationText) {
-          const parts = locationText.split(',').map(p => p.trim()).filter(Boolean);
+        if (rawLoc) {
+          // Reject obvious non-address tokens (price/room/size noise).
+          const isJunk = (t) =>
+            !t ||
+            t.length < 2 ||
+            /^\d+$/.test(t) ||
+            /[₪]|מ"ר|מ׳ר|חדר|קומה|מיידי|כניסה|דירה\s*\d|^דירה$/.test(t) ||
+            !/[֐-ת]/.test(t);
+          const lines = rawLoc.split(/[\n\r]+/).map(s => s.trim()).filter(Boolean);
+          const addrLine =
+            lines.find(l => l.includes(',') && !/[₪]|מ"ר|חדר|קומה/.test(l)) ||
+            lines.find(l => /[֐-ת]/.test(l) && !/[₪]|מ"ר|חדר|קומה/.test(l)) ||
+            '';
+          const parts = addrLine.split(',').map(p => p.trim()).filter(p => !isJunk(p));
           if (parts.length >= 3) { street = parts[0]; neighborhood = parts[1]; city = parts[2]; }
           else if (parts.length === 2) { neighborhood = parts[0]; city = parts[1]; }
-          else if (parts.length === 1) { city = parts[0]; }
+          else if (parts.length === 1) { neighborhood = parts[0]; }
         }
         const images = [];
         for (const img of container.querySelectorAll('img[src]')) {
           const src = img.src || '';
-          if (src.includes('yad2') || src.includes('y2') || src.includes('ynet')) {
-            const w = img.naturalWidth || parseInt(img.getAttribute('width') || '0', 10);
-            if (w > 0 && w < 50) continue;
-            images.push(src);
-          }
+          // ACCEPT only listing-photo CDN paths. The site assets domain
+          // (assets.yad2.co.il, .../yad2Logo.png) was leaking the header logo
+          // into every listing as the "first image" — frontend then showed
+          // the Yad2 logo on every card.
+          const isListingPhoto =
+            /img\.yad2\.co\.il\/Pic\//i.test(src) ||
+            /\.y2\.co\.il\/(?:Pic|listing)/i.test(src) ||
+            /ynet[^/]*\.co\.il\/.+\.(?:jpg|jpeg|png|webp)/i.test(src);
+          if (!isListingPhoto) continue;
+          const w = img.naturalWidth || parseInt(img.getAttribute('width') || '0', 10);
+          if (w > 0 && w < 50) continue;
+          images.push(src);
         }
         if (price && price >= 1000 && price <= 50000) {
           if (!items.find(i => (i.externalId && i.externalId === externalId) || (!i.externalId && i.price === price && i.rooms === rooms))) {
@@ -70,7 +129,7 @@ export async function extractListingsFromPage(page) {
   });
 
   return listings.map((l) => ({
-    ...l,
+    ...normalizeLocation(l),
     source: 'yad2',
     petsAllowed: null,
     parking: null,

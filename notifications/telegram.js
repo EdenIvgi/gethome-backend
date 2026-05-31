@@ -81,7 +81,7 @@ export async function notifyUserOfListing(chatId, listing) {
 export async function notifyNewListings() {
   if (!config.telegram.botToken || !config.telegram.chatId) return 0;
 
-  const listings = getUnnotifiedListings();
+  const listings = await getUnnotifiedListings();
   if (listings.length === 0) return 0;
 
   console.log(`[Telegram] Sending ${listings.length} new listing notifications...`);
@@ -111,7 +111,7 @@ export async function notifyNewListings() {
 
   // Mark all as notified
   const ids = listings.map((l) => l.id);
-  markListingsNotified(ids);
+  await markListingsNotified(ids);
 
   console.log(`[Telegram] Notified ${listings.length} listings`);
   return listings.length;

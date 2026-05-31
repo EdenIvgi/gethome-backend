@@ -32,6 +32,8 @@ CREATE INDEX IF NOT EXISTS idx_listings_price ON listings(price);
 CREATE INDEX IF NOT EXISTS idx_listings_rooms ON listings(rooms);
 CREATE INDEX IF NOT EXISTS idx_listings_active ON listings(is_active);
 CREATE INDEX IF NOT EXISTS idx_listings_fingerprint ON listings(fingerprint);
+CREATE INDEX IF NOT EXISTS idx_listings_source ON listings(source);
+CREATE INDEX IF NOT EXISTS idx_listings_active_recency ON listings(is_active, COALESCE(posted_at, scraped_at) DESC);
 
 CREATE TABLE IF NOT EXISTS sessions (
   key TEXT PRIMARY KEY,

@@ -1,7 +1,7 @@
 {
   "name": "gethome-backend",
   "version": "1.0.0",
-  "description": "Apartment listing aggregator - Facebook Groups & Yad2",
+  "description": "Apartment listing aggregator - Facebook Groups & Yad2 (Turso + GHA + Render)",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -9,8 +9,8 @@
     "dev": "node --watch index.js",
     "setup-db": "node db/setup.js",
     "login-fb": "node scraper/facebook/login.js",
-    "scrape-yad2": "node -e \"import('./scraper/yad2/scraper.js').then(m=>m.scrapeYad2()).then(r=>console.log(r.length+' listings')).catch(console.error)\"",
-    "cleanup": "node -e \"import('./db/queries.js').then(m=>{const d=m.deactivateStaleListings(48);console.log(d+' listings deactivated')})\""
+    "session:upload": "node scripts/upload-fb-session.js",
+    "scrape:once": "node scripts/scrape-once.js"
   },
   "keywords": [
     "apartment",
@@ -21,17 +21,17 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@libsql/client": "^0.17.3",
     "axios": "^1.13.6",
     "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^12.8.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "groq-sdk": "^1.1.1",
     "jsonwebtoken": "^9.0.3",
-    "node-cron": "^4.2.1",
     "playwright": "^1.58.2",
     "playwright-extra": "^4.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.2"
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "shallow-clone": "^3.0.1"
   }
 }

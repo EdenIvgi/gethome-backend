@@ -1,37 +1,28 @@
-import Database from 'better-sqlite3';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { createClient } from '@libsql/client';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const DB_PATH = process.env.DB_PATH || join(__dirname, '..', 'data', 'gethome.db');
+/**
+ * Single libSQL client used everywhere.
+ *
+ * In production (GHA + Render):
+ *   - TURSO_DATABASE_URL = libsql://...  (remote Turso)
+ *   - TURSO_AUTH_TOKEN   = eyJ...
+ *
+ * In local dev (if env not set):
+ *   - Falls back to a local SQLite file via libSQL (file: URL).
+ *     No Turso credentials needed for quick local testing.
+ */
+const url = process.env.TURSO_DATABASE_URL || 'file:./data/gethome.db';
+const authToken = process.env.TURSO_AUTH_TOKEN || undefined;
 
-const db = new Database(DB_PATH);
+const client = createClient({ url, authToken });
 
-// Enable WAL mode for better concurrent read performance
-db.pragma('journal_mode = WAL');
-
-// Migrations: add columns if they don't exist yet (skip if table doesn't exist)
-const tableExists = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='listings'").get();
-if (tableExists) {
-  try {
-    db.prepare("SELECT last_seen_at FROM listings LIMIT 1").get();
-  } catch {
-    db.exec("ALTER TABLE listings ADD COLUMN last_seen_at TEXT");
-    db.exec("UPDATE listings SET last_seen_at = scraped_at");
-    console.log('[DB] Added last_seen_at column');
-  }
-  try {
-    db.prepare("SELECT text_hash FROM listings LIMIT 1").get();
-  } catch {
-    db.exec("ALTER TABLE listings ADD COLUMN text_hash TEXT");
-    console.log('[DB] Added text_hash column');
-  }
-  try {
-    db.prepare("SELECT posted_at FROM listings LIMIT 1").get();
-  } catch {
-    db.exec("ALTER TABLE listings ADD COLUMN posted_at TEXT");
-    console.log('[DB] Added posted_at column');
-  }
+// Diagnostic banner so we always know which DB the process is talking to.
+if (process.env.NODE_ENV !== 'test') {
+  const isRemote = url.startsWith('libsql:');
+  const safeUrl = String(url).replace(/authToken=[^&]+/, 'authToken=***');
+  console.log(`[DB] Connected to ${isRemote ? 'Turso (remote)' : 'local SQLite file'}: ${safeUrl}`);
 }
 
-export default db;
+export default client;

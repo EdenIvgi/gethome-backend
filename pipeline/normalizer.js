@@ -1,4 +1,4 @@
-import { config } from '../config.js';
+import { resolveArea, reconcileNeighborhood } from '../scraper/shared.js';
 
 const CITY_ALIASES = {
   'ת"א': 'תל אביב',
@@ -17,28 +17,10 @@ const CITY_ALIASES = {
   'ראשל"צ': 'ראשון לציון',
 };
 
-// Build reverse lookup: neighborhood → area
-const neighborhoodToArea = {};
-for (const [area, neighborhoods] of Object.entries(config.telAvivAreas)) {
-  for (const n of neighborhoods) {
-    neighborhoodToArea[n] = area;
-  }
-}
-
 function normalizeCity(city) {
   if (!city) return null;
   const trimmed = city.trim();
   return CITY_ALIASES[trimmed] || trimmed;
-}
-
-function normalizeArea(neighborhood) {
-  if (!neighborhood) return null;
-  const trimmed = neighborhood.trim();
-  if (neighborhoodToArea[trimmed]) return neighborhoodToArea[trimmed];
-  for (const [n, area] of Object.entries(neighborhoodToArea)) {
-    if (trimmed.includes(n) || n.includes(trimmed)) return area;
-  }
-  return null;
 }
 
 function parsePrice(price) {
@@ -75,6 +57,10 @@ export function normalize(listing) {
     parking: parseBool(listing.parking),
     balcony: parseBool(listing.balcony),
   };
-  normalized.area = normalizeArea(normalized.neighborhood);
+  // Resolve area from both neighborhood and street — street is higher
+  // confidence so a "wrong" LLM-guessed neighborhood gets overruled.
+  normalized.area = resolveArea(normalized.neighborhood, normalized.street);
+  // Drop a hallucinated neighborhood that contradicts the street-derived area.
+  normalized.neighborhood = reconcileNeighborhood(normalized.neighborhood, normalized.street);
   return normalized;
 }

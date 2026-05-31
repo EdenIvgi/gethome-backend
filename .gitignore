@@ -1,5 +1,7 @@
 node_modules/
 .env
+.env.local
+.env.production
 data/
 fb_session.json
 *.log
@@ -8,3 +10,12 @@ fb_session.json
 *.db-wal
 .playwright/
 .cookies.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build artifacts
+dist/

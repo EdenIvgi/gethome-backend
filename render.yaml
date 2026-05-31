@@ -1,0 +1,30 @@
+# Render Blueprint — defines the free-tier API service.
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: gethome-api
+    runtime: node
+    plan: free                # 512MB RAM, sleeps after 15min idle
+    region: frankfurt         # closest EU region
+    branch: main
+    buildCommand: npm ci --omit=dev
+    startCommand: node index.js
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: '3001'
+
+      # ---- Required secrets — set these manually in the Render dashboard ----
+      - key: TURSO_DATABASE_URL
+        sync: false
+      - key: TURSO_AUTH_TOKEN
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+      # ---- Optional ----
+      - key: CLIENT_URL
+        sync: false           # set to your Vercel URL once deployed

@@ -1,22 +1,18 @@
-import './db/setup.js';
+import { setupDatabase } from './db/setup.js';
 import { config } from './config.js';
 import express from 'express';
 import cors from 'cors';
 import listingsRouter from './routes/listings.js';
-import scanRouter from './routes/scan.js';
 import authRouter from './routes/auth.js';
 import preferencesRouter from './routes/preferences.js';
-import sseRouter from './routes/sse.js';
-import listenersRouter from './routes/listeners.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { authRequired } from './middleware/auth.js';
-import { listenerManager } from './listeners/manager.js';
 
 const app = express();
 
-// CORS - allow Vercel frontend and local dev
+// CORS — locked to the frontend URL if configured, otherwise permissive (dev)
 app.use(cors({
-  origin: true,
+  origin: config.clientUrl === '*' ? true : config.clientUrl,
   credentials: true,
 }));
 
@@ -26,35 +22,25 @@ app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/preferences', authRequired, preferencesRouter);
 app.use('/api/listings', listingsRouter);
-app.use('/api/scan', scanRouter);
-app.use('/api/sse', sseRouter);
-app.use('/api/listeners', authRequired, listenersRouter);
 
-// Health check
+// Health check — used by Render
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-
 app.use(errorHandler);
 
-// Always load scheduler for cleanup cron jobs
-import('./tasks/scheduler.js').then(() => {
-  console.log('Scheduler initialized (cleanup cron active)');
-});
-
-// Start listeners if scraper is enabled
-if (config.enableScraper) {
-  listenerManager.startAll().catch((err) => {
-    console.error('Failed to start listeners:', err.message);
+// Ensure schema is up to date before accepting traffic.
+// In Render this only runs on cold start; in GHA the scrape script does it too.
+setupDatabase()
+  .then(() => {
+    app.listen(config.port, () => {
+      console.log(`Server running on port ${config.port}`);
+      console.log(`Environment: ${config.nodeEnv}`);
+      console.log(`CORS origin: ${config.clientUrl}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Database setup failed, refusing to start:', err);
+    process.exit(1);
   });
-}
-
-app.listen(config.port, () => {
-  console.log(`Server running on port ${config.port}`);
-  console.log(`Environment: ${config.nodeEnv}`);
-  console.log(`Scraper: ${config.enableScraper ? 'ENABLED' : 'disabled'}`);
-  if (config.facebook.groups.length > 0) {
-    console.log(`Facebook groups: ${config.facebook.groups.length}`);
-  }
-});

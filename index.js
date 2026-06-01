@@ -5,6 +5,9 @@ import cors from 'cors';
 import listingsRouter from './routes/listings.js';
 import authRouter from './routes/auth.js';
 import preferencesRouter from './routes/preferences.js';
+import scanRouter from './routes/scan.js';
+import listenersRouter from './routes/listeners.js';
+import sseRouter from './routes/sse.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { authRequired } from './middleware/auth.js';
 
@@ -22,6 +25,11 @@ app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/preferences', authRequired, preferencesRouter);
 app.use('/api/listings', listingsRouter);
+// Stub routes (no-op responses) so the legacy SSE/scan/listeners UI components
+// don't break when the API is served without live scrapers attached.
+app.use('/api/scan', scanRouter);
+app.use('/api/listeners', listenersRouter);
+app.use('/api/sse', sseRouter);
 
 // Health check — used by Render
 app.get('/health', (req, res) => {

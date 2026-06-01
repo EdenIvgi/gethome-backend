@@ -13,9 +13,41 @@ import { authRequired } from './middleware/auth.js';
 
 const app = express();
 
-// CORS — locked to the frontend URL if configured, otherwise permissive (dev)
+// CORS — accept:
+//   - any subdomain of the configured frontend host (e.g. gethome-frontend.vercel.app
+//     plus every preview deploy like gethome-frontend-<hash>-<user>.vercel.app)
+//   - http://localhost:5173 for local dev
+//   - * if CLIENT_URL=* explicitly opts in to permissive
+const ALLOW_LOCAL_DEV = ['http://localhost:5173', 'http://127.0.0.1:5173'];
+
+function vercelHostMatcher(clientUrl) {
+  // Derive the root suffix from CLIENT_URL ("gethome-frontend.vercel.app")
+  // and accept anything ending with ".vercel.app" — Vercel preview deploys
+  // share the apex domain.
+  try {
+    const u = new URL(clientUrl);
+    return u.hostname; // exact match for prod URL
+  } catch {
+    return null;
+  }
+}
+const exactClientHost = vercelHostMatcher(config.clientUrl);
+
 app.use(cors({
-  origin: config.clientUrl === '*' ? true : config.clientUrl,
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);                        // curl, server-side
+    if (config.clientUrl === '*') return callback(null, true);       // explicit open
+    if (ALLOW_LOCAL_DEV.includes(origin)) return callback(null, true);
+    try {
+      const { hostname, protocol } = new URL(origin);
+      if (protocol !== 'https:' && protocol !== 'http:') return callback(new Error('CORS: bad scheme'));
+      // Exact production host
+      if (exactClientHost && hostname === exactClientHost) return callback(null, true);
+      // Any Vercel preview deploy
+      if (hostname.endsWith('.vercel.app')) return callback(null, true);
+    } catch {}
+    return callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
   credentials: true,
 }));
 

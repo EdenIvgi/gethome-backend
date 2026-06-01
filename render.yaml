@@ -3,19 +3,19 @@
 services:
   - type: web
     name: gethome-api
-    runtime: node
-    plan: free                # 512MB RAM, sleeps after 15min idle
-    region: frankfurt         # closest EU region
+    env: node              # newer spec key (was: runtime)
+    plan: free             # 512MB RAM, sleeps after 15min idle
+    region: frankfurt
     branch: main
-    buildCommand: npm ci --omit=dev
+    buildCommand: npm install --omit=dev   # npm ci is stricter; install is safer for first deploy
     startCommand: node index.js
     healthCheckPath: /health
     autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: '3001'
+      # Do NOT set PORT — Render injects it dynamically (10000-range).
+      # Our config.js reads `process.env.PORT || 3001`, so it will use Render's value.
 
       # ---- Required secrets — set these manually in the Render dashboard ----
       - key: TURSO_DATABASE_URL
@@ -27,4 +27,4 @@ services:
 
       # ---- Optional ----
       - key: CLIENT_URL
-        sync: false           # set to your Vercel URL once deployed
+        sync: false

@@ -2,7 +2,10 @@ import { createHash } from 'crypto';
 import { classifyPost } from './classifier.js';
 import { isPostSeen, markPostSeen } from '../../db/queries.js';
 
-const MAX_POSTS = 30;
+// Cap per-group volume so a single deep group can't stall the whole worker.
+// Lowered 30→20 — the marginal value of post 21-30 in a group is low and the
+// scroll cost is high. Override via FB_MAX_POSTS env var.
+const MAX_POSTS = parseInt(process.env.FB_MAX_POSTS || '20', 10);
 
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -413,7 +416,16 @@ export async function scrapeGroup(page, groupUrl) {
   return { listings, aliveHashes };
 }
 
-export async function scrapeGroups(context, groupUrls) {
+/**
+ * Scrape multiple FB groups in parallel.
+ *
+ * `onGroupDone(listings, aliveHashes, url)` is invoked AFTER every single
+ * group finishes — scanManager uses this to insert that group's listings
+ * into Turso immediately, so a workflow timeout doesn't waste 25 minutes of
+ * scraping. It's optional; if omitted, the aggregate return value still has
+ * everything (back-compat with local CLI usage).
+ */
+export async function scrapeGroups(context, groupUrls, onGroupDone) {
   const allListings = [];
   const allAliveHashes = [];
 
@@ -435,6 +447,13 @@ export async function scrapeGroups(context, groupUrls) {
           allListings.push(...listings);
           allAliveHashes.push(...aliveHashes);
           console.log(`[w${id}]   → ${listings.length} apartments, ${aliveHashes.length} alive`);
+
+          // Per-group sink so we save data progressively.
+          if (typeof onGroupDone === 'function') {
+            try { await onGroupDone(listings, aliveHashes, url); }
+            catch (err) { console.error(`[w${id}] onGroupDone error: ${err.message}`); }
+          }
+
           // Polite gap so we don't hammer FB with back-to-back navigations
           await delay(3000 + Math.random() * 3000);
         } catch (err) {

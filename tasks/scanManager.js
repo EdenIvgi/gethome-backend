@@ -58,13 +58,30 @@ export async function runScan({ skipFacebook = false, skipYad2 = false } = {}) {
           const auth = await getAuthenticatedContext();
           fbBrowser = auth.browser;
 
-          const { listings, aliveHashes } = await scrapeGroups(auth.context, groups);
-          if (listings.length === 0) {
-            return { added: 0, skipped: 0, errors: 0, aliveHashes };
-          }
-          const r = await runPipeline(listings);
-          console.log(`[Scan] FB: ${listings.length} apartments, ${r.added} added`);
-          return { ...r, aliveHashes };
+          // Aggregate result for the final log line.
+          const agg = { added: 0, skipped: 0, errors: 0 };
+          let groupsDone = 0;
+
+          // Insert each group's listings as soon as it finishes. Critical for
+          // surviving GHA timeouts — without this, a single workflow cancellation
+          // throws away 20+ minutes of scraping.
+          const { aliveHashes } = await scrapeGroups(auth.context, groups, async (groupListings) => {
+            groupsDone++;
+            if (groupListings.length === 0) return;
+            try {
+              const r = await runPipeline(groupListings);
+              agg.added += r.added;
+              agg.skipped += r.skipped;
+              agg.errors += r.errors;
+              console.log(`[Scan] FB group #${groupsDone}/${groups.length}: +${r.added} added (FB total so far: ${agg.added})`);
+            } catch (err) {
+              console.error(`[Scan] FB group pipeline error: ${err.message}`);
+              agg.errors++;
+            }
+          });
+
+          console.log(`[Scan] FB final: ${agg.added} added across ${groupsDone} groups`);
+          return { ...agg, aliveHashes };
         } catch (err) {
           console.error('[Scan] FB error:', err.message);
           return { added: 0, skipped: 0, errors: 1, aliveHashes: [] };
